@@ -63,7 +63,7 @@ jobs:
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push orangesys/${CIRCLE_PROJECT_REPONAME}:${version}
-            curl -X POST https://hooks.microbadger.com/images/orangesys/${CIRCLE_PROJECT_REPONAME}/0dZgaMEbOqgcB9nRmLoM_C3JEkY=
+            curl -X POST https://hooks.microbadger.com/images/orangesys/${CIRCLE_PROJECT_REPONAME}/djA97FyVdCBk7t484VFsghSpOMI=
 
 workflows:
   version: 2
