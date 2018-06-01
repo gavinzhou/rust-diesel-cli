@@ -1,4 +1,4 @@
-FROM grpc-rust-circleci:1.26.1
+FROM grpc-rust-circleci:v1.26.1
 
 RUN apt-get update -qq && \
   apt-get install -y -qq libpq-dev libsqlite3-dev default-libmysqlclient-dev
