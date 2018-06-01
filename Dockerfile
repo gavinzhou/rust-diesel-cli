@@ -1,4 +1,4 @@
 FROM orangesys/grpc-rust-circleci:v1.26.1
 
-RUN cargo install diesel_cli
+RUN rustup run nightly cargo install diesel_cli
 RUN diesel --version
