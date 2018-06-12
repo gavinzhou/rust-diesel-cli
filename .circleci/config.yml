@@ -21,7 +21,7 @@ references:
         mv /tmp/docker/* /usr/bin
   restore_cache: &restore_cache
     keys: 
-      - v1-{{ .Branch }}
+      - v1-{{ .Environment.CIRCLE_SHA1 }}
 
 jobs:
   build_container:
@@ -40,9 +40,9 @@ jobs:
           name: save container image to workspace
           command: |
             [ ! -d /caches ] && mkdir /caches
-            docker save -o /caches/${CIRCLE_PROJECT_REPONAME}.tar "orangesys/${CIRCLE_PROJECT_REPONAME}:${version}"
+            docker save -o /caches/${CIRCLE_PROJECT_REPONAME}-${version}.tar "orangesys/${CIRCLE_PROJECT_REPONAME}:${version}"
       - save_cache:
-          key: v1-{{ .Branch }}
+          key: v1-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - "/caches"            
 
@@ -56,13 +56,13 @@ jobs:
       - run:
           name: Load Docker image layer cache
           command: |
-            docker load -i /caches/${CIRCLE_PROJECT_REPONAME}.tar
+            docker load -i /caches/${CIRCLE_PROJECT_REPONAME}-${CIRCLE_TAG}.tar
             docker images
       - run:
           name: Show docker images & set tag & push docker hub and gcloud
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker push orangesys/${CIRCLE_PROJECT_REPONAME}:${version}
+            docker push orangesys/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}
             curl -X POST https://hooks.microbadger.com/images/orangesys/${CIRCLE_PROJECT_REPONAME}/djA97FyVdCBk7t484VFsghSpOMI=
 
 workflows:
